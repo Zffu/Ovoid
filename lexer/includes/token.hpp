@@ -12,7 +12,25 @@ enum token_type {
 	STRING = 0x01,
 
 	BOOLEAN = 0x02,
-	INTEGER = 0x03
+	INTEGER = 0x03,
+
+	/**
+	 * Keywords
+	 */
+	FUNCTION = 0x04,
+
+	/**
+	 * Symbols
+	 */
+	BRACKET_OPEN = 0x05,
+	BRACKET_CLOSE = 0x06,
+	PAREN_OPEN = 0x07,
+	PAREN_CLOSE = 0x08,
+	SEMICOLON = 0x09,
+	COMMA,
+
+
+	NONE
 };
 
 /**
@@ -22,8 +40,14 @@ class token {
 public:
 	token_type type;
 
+	token* prev;
+	token* next;
+
 	token(token_type type) {
 		this->type = type;
+		
+		this->prev = nullptr;
+		this->next = nullptr;
 	}
 };
 
