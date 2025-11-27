@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <str.hpp>
+
 using namespace ovoid::lexer;
+using namespace ovoid::utils;
 
 void lexer::append_token(token* t) {
 	if(this->root == nullptr) {
@@ -64,7 +67,61 @@ lexer::lexer(char* data, size_t sz) {
 				c = data[i];
 			}
 
-			
+			std::string str(temp_buff);
+
+			switch(hash_str(str)) {
+				case static_hash_str("fun"): {
+					this->append_token(new token(token_type::FUNCTION));
+					break;
+				}
+				
+				case static_hash_str("true"): {
+					this->append_token(new bool_token(true));
+					break;
+				}
+
+				case static_hash_str("false"): {
+					this->append_token(new bool_token(false));
+					break;
+				}
+
+				default: {
+					this->append_token(new keyword_token(str));
+					break;
+				}
+			}
+		} else {
+			switch(c) {
+				case '{': {
+					this->append_token(new token(token_type::BRACKET_OPEN));
+					break;
+				}
+
+				case '}': {
+					this->append_token(new token(token_type::BRACKET_CLOSE));
+					break;
+				}
+
+				case '(': {
+					this->append_token(new token(token_type::PAREN_OPEN));
+					break;
+				}
+
+				case ')': {
+					this->append_token(new token(token_type::PAREN_CLOSE));
+					break;
+				}
+
+				case ';': {
+					this->append_token(new token(token_type::SEMICOLON));
+					break;
+				}
+
+				case ',': {
+					this->append_token(new token(token_type::COMMA));
+				}
+
+			}
 		}
 
 
